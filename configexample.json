@@ -1,0 +1,13 @@
+{
+	"config example use": "this is an example config. the bot refers to 'config.json' for its config. fill out this config, then rename it.",
+	"token": "insert discord token",
+	"clientId": "insert client id",
+	"guildId": "insert guild id",
+	"embedFormat": {
+		"color": 2894897,
+		"author": { "name": "Catnap", "iconURL": "https://182exe.online/resources/catnap.png" },
+		"thumbnail": { "url": "https://182exe.online/resources/catnap.png" },
+		"timestamp": "",
+		"footer": { "text": "Catnap", "iconURL": "https://182exe.online/resources/catnap.png" }
+	}
+}

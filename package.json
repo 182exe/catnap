@@ -1,0 +1,27 @@
+{
+  "name": "catnap",
+  "version": "0.0.0",
+  "description": "nap for cat",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/182exe/catnap.git"
+  },
+  "keywords": [
+    "discord",
+    "nodejs",
+    "bot"
+  ],
+  "author": "182exe",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/182exe/catnap/issues"
+  },
+  "homepage": "https://github.com/182exe/catnap#readme",
+  "dependencies": {
+    "discord.js": "^14.11.0"
+  }
+}
