@@ -8,7 +8,7 @@ module.exports = {
 		.setDescription('Send the current time in the form of 7 different Discord timestamps.'),
 	async execute(interaction) {
         const t = Math.floor(Date.now() / 1000);
-		const responseEmbed = new EmbedBuilder(config.embedFormat).setTimestamp().setAuthor({name: this.data.name}).addFields(
+		const responseEmbed = new EmbedBuilder(config.embedFormat).setTimestamp().setAuthor({name: `/${this.data.name}`}).addFields(
 			{
 				name: `Discord Timestamps`,
 				value: `Discord implemented a timestamp feature that allows you to do some cool stuff. Here's all of them!

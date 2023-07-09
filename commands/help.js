@@ -1,5 +1,4 @@
 const { SlashCommandBuilder , EmbedBuilder } = require('discord.js');
-const fs = require('fs');
 const localCommands = require(`../commands_generated.json`)
 const config = require('../config.json');
 //.setDefaultMemberPermissions(PermissionFlagsBits.Administrator);
@@ -9,7 +8,7 @@ module.exports = {
 		.setName('help')
 		.setDescription('Provides you with a guide on how to use Catnap.'),
 	async execute(interaction) {
-		const responseEmbed = new EmbedBuilder(config.embedFormat).setAuthor({name: this.data.name})
+		const responseEmbed = new EmbedBuilder(config.embedFormat).setAuthor({name: `/${this.data.name}`})
 		Object.values(localCommands).forEach(command => {
 			responseEmbed.addFields({
 			  	name: `\` /${command.name} \``,
