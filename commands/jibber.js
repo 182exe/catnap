@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder , EmbedBuilder } = require('discord.js');
 const config = require('../config.json');
 
 function jibber(length, punctuate, punctuationMarks, wordLengthLimit, mimicEnglishPractices) {
@@ -107,7 +107,6 @@ function jibber(length, punctuate, punctuationMarks, wordLengthLimit, mimicEngli
                 }
             
                 const finalResult = modifiedWord.join('').replace(/([aeiou])\1+/gi, '$1');
-                console.log(finalResult)
             
                 modifiedWord.forEach((char, i, arr) => {
                     if (/[aeiou]/.test(char) && arr[i - 1] === char) {
@@ -163,7 +162,6 @@ function jibber(length, punctuate, punctuationMarks, wordLengthLimit, mimicEngli
             } else {
                 sentence[i] = punctuate(sentence[i]);
                 if (punctuationMarks.includes(sentence[i].charAt(sentence[i].length - 1)) && i != sentence.length) {
-                    console.log(sentence, typeof sentence)
                     sentence[i + 1] = sentence[i + 1].charAt(0).toUpperCase() + sentence[i + 1].slice(1);
                     bounty = bounty - 10;
                 } else {
@@ -225,6 +223,14 @@ module.exports = {
         const wordLengthLimit = interaction.options.getInteger(`word_length_limit`) ?? undefined;
         const mimicEnglishPractices = interaction.options.getBoolean(`mimic_english_practices`) ?? false;
 		const content = jibber(length, punctuate, punctuationMarks, wordLengthLimit, mimicEnglishPractices);
-		await interaction.reply(`Generated a jibber! \`\`\`${content}\`\`\``);
+
+		const responseEmbed = new EmbedBuilder(config.embedFormat).setTimestamp().setAuthor({name: `/${this.data.name}`}).addFields(
+			{
+				name: `Generated Jibberish`,
+				value: `\`\`\`${content}\`\`\``
+			}
+		)
+
+		await interaction.reply({ embeds: [responseEmbed] });
 	},
 };

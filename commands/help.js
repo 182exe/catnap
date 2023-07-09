@@ -9,11 +9,11 @@ module.exports = {
 		.setName('help')
 		.setDescription('Provides you with a guide on how to use Catnap.'),
 	async execute(interaction) {
-		const responseEmbed = new EmbedBuilder(config.embedFormat).setTimestamp()
-		localCommands.forEach(command => {
-			catnapHelp.addFields({
-			  	name: command.name,
-			  	value: command.value,
+		const responseEmbed = new EmbedBuilder(config.embedFormat).setAuthor({name: this.data.name})
+		Object.values(localCommands).forEach(command => {
+			responseEmbed.addFields({
+			  	name: `\` /${command.name} \``,
+			  	value: `- ${command.value}`,
 			  	inline: true
 			});
 		});

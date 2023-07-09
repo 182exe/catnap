@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder , EmbedBuilder } = require('discord.js');
 const config = require('../config.json');
 
 const gifs = [
@@ -15,12 +15,14 @@ const gifs = [
 	"https://i.imgur.com/Y1SiR.gif",
 	"https://i.gifer.com/815L.gif"
 ];
+const gif = gifs[Math.floor(Math.random() * gifs.length)]
 
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('ping')
 		.setDescription('Replies if the bot is online.'),
 	async execute(interaction) {
-		await interaction.reply(`Pong! ${gifs[Math.floor(Math.random() * gifs.length)]}`);
+		const responseEmbed = new EmbedBuilder(config.embedFormat).setAuthor({name: `/${this.data.name}`}).setImage(gif)
+		await interaction.reply({ embeds: [responseEmbed] });
 	},
 };

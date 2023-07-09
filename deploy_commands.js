@@ -11,11 +11,13 @@ for (const file of commandFiles) {
 }
 
 function createFormattedObject(commands) {
-	const formattedData = commands.map(item => ({
-	  	name: `**</${item.name}:0>**`,
-	  	value: `item.description`,
-	  	inline: true
-	}));
+	const formattedData = commands.reduce((obj, item) => {
+		obj[item.name] = {
+			name: item.name,
+			value: item.description,
+	  	};
+		return obj;
+  	}, {});
   
 	return formattedData;
 };
