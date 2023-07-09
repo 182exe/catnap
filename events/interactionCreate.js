@@ -1,20 +1,20 @@
 const { Events } = require('discord.js');
+const { loginator } = require('../loginator');
 
 module.exports = {
 	name: Events.InteractionCreate,
 	async execute(interaction) {
 		if (!interaction.isChatInputCommand()) return;
 		const command = interaction.client.commands.get(interaction.commandName);
-		console.log(`Run | Interaction "${interaction.commandName}" recieved | id: ${interaction.user.id} username: ${interaction.user.tag}`);
+		loginator(`/${interaction.commandName} is running...\nfrom: ${interaction.user.tag} (${interaction.user.id})`, `cmdr`);
 		if (!command) {
-			console.error(`Error | No command matching ${interaction.commandName} was found.`);
+			loginator(`Someone ran a command that didn't exist! ${interaction.commandName} is not existing. Try redeploying commands.`, `oops`);
 			return;
 		}
 		try {
 			await command.execute(interaction);
 		} catch (error) {
-			console.error(`Error | A problem occured while attempting to execute ${interaction.commandName}`);
-			console.error(error);
+			loginator(`Something went wrong when trying to run a command! Error text: ${error}`, `oops`);
 		}
 		return;
 	},
