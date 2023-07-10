@@ -55,7 +55,7 @@ jobs:
         run: |
           echo "Current version: ${{ steps.current-version.outputs.CURRENT_VERSION }}"
           echo "Previous version: ${{ steps.previous-version.outputs.PREVIOUS_VERSION }}"
-          echo "Version changed: ${{ env.VERSION_CHANGED }}
+          echo "Version changed: ${{ env.VERSION_CHANGED }}"
 
       - name: Generate release notes
         id: release-notes
