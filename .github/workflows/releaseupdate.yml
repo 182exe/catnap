@@ -25,9 +25,9 @@ jobs:
       - name: Get previous package version
         id: previous-version
         run: |
-          PREVIOUS_VERSION=$(curl -s -H "Authorization: Bearer ${{ secrets.PAT }}" \
-            "https://api.github.com/repos/${{ github.repository }}/releases?per_page=1" \
-            | jq -r '.[0].tag_name' | cut -c 2-)
+          git checkout HEAD~1
+          PREVIOUS_VERSION=$(jq -r .version package.json || echo "none")
+          git checkout -
           echo "PREVIOUS_VERSION=$PREVIOUS_VERSION" >> $GITHUB_ENV
       
       - name: Get current package version

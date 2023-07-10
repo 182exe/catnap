@@ -1,6 +1,6 @@
 {
   "name": "catnap",
-  "version": "1.0.20",
+  "version": "1.0.21",
   "description": "nap for cat",
   "main": "index.js",
   "scripts": {
