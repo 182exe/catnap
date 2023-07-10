@@ -30,7 +30,9 @@ module.exports = {
 
         try {
             fs.writeFileSync(filePath, JSON.stringify(userData, null, 4));
-        } catch (error) {}
+        } catch (error) {
+            loginator(error, `oops`);
+        }
 
         const responseEmbed = new EmbedBuilder(config.embedFormat)
             .setAuthor({ name: `/${this.data.name}` })
