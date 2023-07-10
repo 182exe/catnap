@@ -2,7 +2,7 @@ name: Create Release
 on:
   push:
     branches:
-      - main # Update with your desired branch name
+      - main
 
 jobs:
   create-release:
@@ -21,14 +21,15 @@ jobs:
 
       - name: Get package version
         id: version
-        run: echo "::set-output name=version::$(node -p "require('./package.json').version")"
+        run: echo "VERSION=$(node -p \"require('./package.json').version\")" >> $GITHUB_ENV
 
       - name: Create release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
+          VERSION: ${{ env.VERSION }}
         with:
-          tag_name: v${{ steps.version.outputs.version }}
-          release_name: Release ${{ steps.version.outputs.version }}
+          tag_name: v${{ env.VERSION }}
+          release_name: Release ${{ env.VERSION }}
           draft: false
           prerelease: false
