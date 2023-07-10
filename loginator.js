@@ -1,4 +1,4 @@
-function loginator(message, messageType) {
+async function loginator(message, messageType) {
     var cci = {
         reset: "\x1b[0m",
         bright: "\x1b[1m",
@@ -47,10 +47,10 @@ function loginator(message, messageType) {
     message ??= " ";
     messageType ??= "info";
     const types = {
-        cmdr: ["CMDR", cci.fg.brightgreen, cci.bg.brightblack],
-        info: ["INFO", cci.fg.brightcyan, cci.bg.brightblack],
+        cmdr: ["CMDR", cci.fg.green, cci.bg.brightblack],
+        info: ["INFO", cci.fg.cyan, cci.bg.brightblack],
         warn: ["WARN", cci.fg.yellow, cci.bg.brightblack],
-        oops: ["OOPS", cci.fg.brightred, cci.bg.brightblack]
+        oops: ["OOPS", cci.fg.red, cci.bg.brightblack]
     }
 
     const timestamp = new Date().toUTCString();

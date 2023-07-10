@@ -7,6 +7,7 @@ module.exports = {
 		.setName('timestamp')
 		.setDescription('Send the current time in the form of 7 different Discord timestamps.'),
 	async execute(interaction) {
+		const userData = require(`../user_data.json`)
         const t = Math.floor(Date.now() / 1000);
 		const responseEmbed = new EmbedBuilder(config.embedFormat).setTimestamp().setAuthor({name: `/${this.data.name}`}).addFields(
 			{
@@ -16,6 +17,6 @@ module.exports = {
 			}
 		)
 
-		await interaction.reply({ embeds: [responseEmbed] });
+		await interaction.reply({ embeds: [responseEmbed], ephemeral: userData[user]?.ephemeral ?? true });
 	},
 };

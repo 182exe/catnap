@@ -22,7 +22,8 @@ module.exports = {
 		.setName('ping')
 		.setDescription('Replies if the bot is online.'),
 	async execute(interaction) {
+		const userData = require(`../user_data.json`)
 		const responseEmbed = new EmbedBuilder(config.embedFormat).setAuthor({name: `/${this.data.name}`}).setImage(gif)
-		await interaction.reply({ embeds: [responseEmbed] });
+		await interaction.reply({ embeds: [responseEmbed], ephemeral: userData[user]?.ephemeral ?? true });
 	},
 };

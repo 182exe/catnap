@@ -8,6 +8,7 @@ module.exports = {
 		.setName('help')
 		.setDescription('Provides you with a guide on how to use Catnap.'),
 	async execute(interaction) {
+		const userData = require(`../user_data.json`)
 		const responseEmbed = new EmbedBuilder(config.embedFormat).setAuthor({name: `/${this.data.name}`})
 		Object.values(localCommands).forEach(command => {
 			responseEmbed.addFields({
@@ -16,6 +17,6 @@ module.exports = {
 			  	inline: true
 			});
 		});
-		await interaction.reply({ embeds: [responseEmbed] });
+		await interaction.reply({ embeds: [responseEmbed], ephemeral: userData[user]?.ephemeral ?? true });
 	},
 };

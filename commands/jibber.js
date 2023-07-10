@@ -211,6 +211,7 @@ module.exports = {
             .setRequired(false))
     ,
 	async execute(interaction) {
+        const userData = require(`../user_data.json`)
         const length = interaction.options.getInteger(`length`) ?? 20;
         const punctuate = interaction.options.getBoolean(`punctuate`) ?? true;
         let punctuationMarksRaw = interaction.options.getString(`punctuation_marks`) ?? undefined;
@@ -226,11 +227,15 @@ module.exports = {
 
 		const responseEmbed = new EmbedBuilder(config.embedFormat).setTimestamp().setAuthor({name: `/${this.data.name}`}).addFields(
 			{
+                name: `Configuration`,
+                value: `\`\`\`json\n${JSON.stringify({length, punctuate, punctuationMarks, wordLengthLimit, mimicEnglishPractices}, null, 4)}\n\`\`\``
+            },
+            {
 				name: `Generated Jibberish`,
 				value: `\`\`\`${content}\`\`\``
 			}
 		)
 
-		await interaction.reply({ embeds: [responseEmbed] });
+		await interaction.reply({ embeds: [responseEmbed], ephemeral: userData[user]?.ephemeral ?? true });
 	},
 };
