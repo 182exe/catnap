@@ -22,8 +22,8 @@ jobs:
       - name: Check if version changed
         id: version-check
         run: |
-          CHANGES=$(git diff --name-only HEAD^ HEAD)
-          if echo "$CHANGES" | grep --quiet "^package.json$"; then
+          CHANGES=$(git show HEAD:package.json | diff package.json -)
+          if [[ -n "$CHANGES" ]]; then
             echo "VERSION_CHANGED=true" >> $GITHUB_ENV
           else
             echo "VERSION_CHANGED=false" >> $GITHUB_ENV
