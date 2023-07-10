@@ -2,32 +2,33 @@ name: Create Release
 on:
   push:
     branches:
-      - main
+      - main # Update with your desired branch name
 
 jobs:
-  release:
+  create-release:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v2
 
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: 14
+          node-version: 16
+
+      - name: Install dependencies
+        run: npm ci
 
       - name: Get package version
         id: version
-        run: echo "PACKAGE_VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_ENV
+        run: echo "::set-output name=version::$(node -p "require('./package.json').version")"
 
       - name: Create release
         uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT }}
         with:
-          github_token: ${{ secrets.PAT }}
-          tag_name: v${{ env.PACKAGE_VERSION }}
-          release_name: Release ${{ env.PACKAGE_VERSION }}
-          body: |
-            Release for version ${{ env.PACKAGE_VERSION }}
+          tag_name: v${{ steps.version.outputs.version }}
+          release_name: Release ${{ steps.version.outputs.version }}
           draft: false
           prerelease: false
