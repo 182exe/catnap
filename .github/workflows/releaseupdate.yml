@@ -79,7 +79,7 @@ jobs:
           release_name: Release ${{ env.CURRENT_VERSION }}
           body: |
             Commit: [${{ github.sha }}](${{ github.event.compare }})
-
+      
             ${{ env.RELEASE_NOTES }}
           draft: false
           prerelease: false
