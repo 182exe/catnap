@@ -2,7 +2,7 @@ name: Create Release
 on:
   push:
     branches:
-      - main
+      - main # Update with your desired branch name
 
 jobs:
   create-release:
@@ -23,13 +23,25 @@ jobs:
         id: version
         run: echo "VERSION=$(node -p \"require('./package.json').version\")" >> $GITHUB_ENV
 
+      - name: Generate release notes
+        id: release-notes
+        run: |
+          RELEASE_NOTES=$(curl -s -X GET -H "Accept: application/vnd.github.v3+json" \
+          -H "Authorization: Bearer ${{ secrets.PAT }}" \
+          "https://api.github.com/repos/${{ github.repository }}/compare/main...HEAD" \
+          | jq -r ".commits[].commit.message")
+
+          echo "RELEASE_NOTES=$RELEASE_NOTES" >> $GITHUB_ENV
+
       - name: Create release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
           VERSION: ${{ env.VERSION }}
+          RELEASE_NOTES: ${{ env.RELEASE_NOTES }}
         with:
           tag_name: v${{ env.VERSION }}
           release_name: Release ${{ env.VERSION }}
+          body: ${{ env.RELEASE_NOTES }}
           draft: false
           prerelease: false
