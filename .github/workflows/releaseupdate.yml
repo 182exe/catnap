@@ -31,14 +31,20 @@ jobs:
           CURRENT_VERSION=$(jq -r .version package.json)
           echo "CURRENT_VERSION=$CURRENT_VERSION" >> $GITHUB_ENV
 
-      - name: Check if version changed
-        id: version-check
+          - name: Check if version changed
+          id: version-check
+          run: |
+            if [[ "${{ steps.current-version.outputs.CURRENT_VERSION }}" == "${{ steps.previous-version.outputs.PREVIOUS_VERSION }}" ]]; then
+              echo "VERSION_CHANGED=false" >> $GITHUB_ENV
+            else
+              echo "VERSION_CHANGED=true" >> $GITHUB_ENV
+            fi
+        
+      - name: Debug version change
         run: |
-          if [[ "${{ steps.current-version.outputs.CURRENT_VERSION }}" == "${{ steps.previous-version.outputs.PREVIOUS_VERSION }}" ]]; then
-            echo "VERSION_CHANGED=false" >> $GITHUB_ENV
-          else
-            echo "VERSION_CHANGED=true" >> $GITHUB_ENV
-          fi
+          echo "Current version: ${{ steps.current-version.outputs.CURRENT_VERSION }}"
+          echo "Previous version: ${{ steps.previous-version.outputs.PREVIOUS_VERSION }}"
+          echo "Version changed: ${{ env.VERSION_CHANGED }}"
 
       - name: Generate release notes
         id: release-notes
