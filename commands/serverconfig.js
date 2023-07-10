@@ -3,7 +3,6 @@ const fs = require('node:fs');
 const path = require('node:path');
 const guildData = require(`../guild_data.json`)
 const config = require('../config.json');
-const userData = require(`../user_data.json`)
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -16,6 +15,11 @@ module.exports = {
             .addChannelTypes(ChannelType.GuildText)
             .setRequired(true)),
 	async execute(interaction) {
+        let userData = {};
+        try {
+            const fileData = fs.readFileSync(path.join(__dirname, '..', 'user_data.json'), 'utf-8');
+            userData = JSON.parse(fileData);
+        } catch (error) {}
 		const responseEmbed = new EmbedBuilder(config.embedFormat).setAuthor({name: `/${this.data.name}`}).addFields({
             name: `Server Configuration`,
             value: `You updated some server settings. Here's what your server looks like now:
@@ -41,6 +45,6 @@ ${JSON.stringify(guildData[interaction.guild.id], null, 4)}
             fs.writeFileSync(filePath, JSON.stringify(jsonData, null, 4));
         } catch (error) {}
         
-		await interaction.reply({ embeds: [responseEmbed], ephemeral: userData[user]?.ephemeral ?? true });
+		await interaction.reply({ embeds: [responseEmbed], ephemeral: userData[interaction.user.id]?.ephemeral ?? true });
 	},
 };

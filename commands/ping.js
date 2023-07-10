@@ -1,6 +1,7 @@
 const { SlashCommandBuilder , EmbedBuilder } = require('discord.js');
 const config = require('../config.json');
-const userData = require(`../user_data.json`)
+const fs = require(`node:fs`)
+const path = require(`node:path`)
 
 const gifs = [
 	"https://thumbs.gfycat.com/EssentialHollowGalapagossealion-size_restricted.gif",
@@ -23,7 +24,12 @@ module.exports = {
 		.setName('ping')
 		.setDescription('Replies if the bot is online.'),
 	async execute(interaction) {
+		let userData = {};
+        try {
+            const fileData = fs.readFileSync(path.join(__dirname, '..', 'user_data.json'), 'utf-8');
+            userData = JSON.parse(fileData);
+        } catch (error) {}
 		const responseEmbed = new EmbedBuilder(config.embedFormat).setAuthor({name: `/${this.data.name}`}).setImage(gif)
-		await interaction.reply({ embeds: [responseEmbed], ephemeral: userData[user]?.ephemeral ?? true });
+		await interaction.reply({ embeds: [responseEmbed], ephemeral: userData[interaction.user.id]?.ephemeral ?? true });
 	},
 };

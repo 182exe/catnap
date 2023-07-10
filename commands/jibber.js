@@ -1,6 +1,7 @@
 const { SlashCommandBuilder , EmbedBuilder } = require('discord.js');
 const config = require('../config.json');
-const userData = require('../user_data.json')
+const fs = require(`node:fs`)
+const path = require(`node:path`)
 
 function jibber(length, punctuate, punctuationMarks, wordLengthLimit, mimicEnglishPractices) {
     length = typeof length !== `undefined` ? length : 1;
@@ -212,7 +213,11 @@ module.exports = {
             .setRequired(false))
     ,
 	async execute(interaction) {
-        const userData = require(`../user_data.json`)
+        let userData = {};
+        try {
+            const fileData = fs.readFileSync(path.join(__dirname, '..', 'user_data.json'), 'utf-8');
+            userData = JSON.parse(fileData);
+        } catch (error) {}
         const length = interaction.options.getInteger(`length`) ?? 20;
         const punctuate = interaction.options.getBoolean(`punctuate`) ?? true;
         let punctuationMarksRaw = interaction.options.getString(`punctuation_marks`) ?? undefined;
@@ -237,6 +242,6 @@ module.exports = {
 			}
 		)
 
-		await interaction.reply({ embeds: [responseEmbed], ephemeral: userData[user]?.ephemeral ?? true });
+		await interaction.reply({ embeds: [responseEmbed], ephemeral: userData[interaction.user.id]?.ephemeral ?? true });
 	},
 };

@@ -2,7 +2,6 @@ const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
 const config = require('../config.json');
-const userData = require(`../user_data.json`)
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -16,11 +15,9 @@ module.exports = {
         const user = interaction.user.id;
         const ephemeral = interaction.options.getBoolean('ephemeral') ?? true;
 
-        const filePath = path.join(__dirname, '..', 'user_data.json');
-
         let userData = {};
         try {
-            const fileData = fs.readFileSync(filePath, 'utf-8');
+            const fileData = fs.readFileSync(path.join(__dirname, '..', 'user_data.json'), 'utf-8');
             userData = JSON.parse(fileData);
         } catch (error) {}
 
@@ -30,7 +27,7 @@ module.exports = {
         };
 
         try {
-            fs.writeFileSync(filePath, JSON.stringify(userData, null, 4));
+            fs.writeFileSync(path.join(__dirname, '..', 'user_data.json'), JSON.stringify(userData, null, 4));
         } catch (error) {
             loginator(error, `oops`);
         }
@@ -42,6 +39,6 @@ module.exports = {
                 value: `You updated some of your settings. Here's what they look like now:\n\`\`\`json\n${JSON.stringify(userData[user], null, 4)}\`\`\``
             });
 
-        await interaction.reply({ embeds: [responseEmbed], ephemeral: userData[user]?.ephemeral ?? true });
+        await interaction.reply({ embeds: [responseEmbed], ephemeral: userData[interaction.user.id]?.ephemeral ?? true });
     },
 };

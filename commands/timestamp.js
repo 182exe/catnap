@@ -1,13 +1,18 @@
 const { SlashCommandBuilder , EmbedBuilder } = require('discord.js');
-const localCommands = require(`../commands_generated.json`)
+const fs = require(`node:fs`)
+const path = require(`node:path`)
 const config = require('../config.json');
-const userData = require(`../user_data.json`)
 
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('timestamp')
 		.setDescription('Send the current time in the form of 7 different Discord timestamps.'),
 	async execute(interaction) {
+		let userData = {};
+        try {
+            const fileData = fs.readFileSync(path.join(__dirname, '..', 'user_data.json'), 'utf-8');
+            userData = JSON.parse(fileData);
+        } catch (error) {}
         const t = Math.floor(Date.now() / 1000);
 		const responseEmbed = new EmbedBuilder(config.embedFormat).setTimestamp().setAuthor({name: `/${this.data.name}`}).addFields(
 			{
@@ -17,6 +22,6 @@ module.exports = {
 			}
 		)
 
-		await interaction.reply({ embeds: [responseEmbed], ephemeral: userData[user]?.ephemeral ?? true });
+		await interaction.reply({ embeds: [responseEmbed], ephemeral: userData[interaction.user.id]?.ephemeral ?? true });
 	},
 };
