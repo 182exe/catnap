@@ -24,7 +24,7 @@ jobs:
       - name: Create release
         uses: actions/create-release@v1
         with:
-          token: ${{ secrets.PAT }}
+          github_token: ${{ secrets.PAT }}
           tag_name: v${{ env.PACKAGE_VERSION }}
           release_name: Release ${{ env.PACKAGE_VERSION }}
           body: |
