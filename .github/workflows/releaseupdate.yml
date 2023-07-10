@@ -2,7 +2,7 @@ name: Create Release
 on:
   push:
     branches:
-      - main # Update with your desired branch name
+      - main
 
 jobs:
   create-release:
