@@ -18,19 +18,19 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+      
+      - name: Install jq
+        run: sudo apt-get install jq -y
 
       - name: Get previous package version
         id: previous-version
         run: |
-          PREVIOUS_VERSION=$(git show HEAD~1:package.json 2>/dev/null | jq -r .version || echo "")
+          PREVIOUS_VERSION=$(git show HEAD~1:package.json 2>/dev/null | jq -r .version || echo "none")
           echo "PREVIOUS_VERSION=$PREVIOUS_VERSION" >> $GITHUB_ENV
       
       - name: Debug previous package version
         run: |
           echo "Previous package version: ${{ env.PREVIOUS_VERSION }}"
-      
-      - name: Install jq
-        run: sudo apt-get install jq -y
       
       - name: Get current package version
         id: current-version
