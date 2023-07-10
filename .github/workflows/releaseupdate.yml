@@ -19,14 +19,10 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Get previous commit SHA
-        id: prev-commit
-        run: echo "PREV_COMMIT=$(git rev-parse HEAD~1)" >> $GITHUB_ENV
-
       - name: Check if version changed
         id: version-check
         run: |
-          CHANGES=$(git diff --name-only ${{ env.PREV_COMMIT }} HEAD)
+          CHANGES=$(git diff --name-only HEAD^ HEAD)
           if echo "$CHANGES" | grep --quiet "^package.json$"; then
             echo "VERSION_CHANGED=true" >> $GITHUB_ENV
           else
