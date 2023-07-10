@@ -25,9 +25,7 @@ jobs:
       - name: Get previous package version
         id: previous-version
         run: |
-          git checkout HEAD~1
-          PREVIOUS_VERSION=$(jq -r .version package.json || echo "none")
-          git checkout -
+          PREVIOUS_VERSION=$(git checkout HEAD~1 -- package.json && jq -r .version package.json)
           echo "PREVIOUS_VERSION=$PREVIOUS_VERSION" >> $GITHUB_ENV
       
       - name: Get current package version
