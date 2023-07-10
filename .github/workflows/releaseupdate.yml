@@ -22,7 +22,7 @@ jobs:
       - name: Get previous package version
         id: previous-version
         run: |
-          PREVIOUS_VERSION=$(git show HEAD~1:package.json | jq -r .version)
+          PREVIOUS_VERSION=$(git show HEAD~1:package.json 2>/dev/null | jq -r .version || echo "")
           echo "PREVIOUS_VERSION=$PREVIOUS_VERSION" >> $GITHUB_ENV
       
       - name: Debug previous package version
