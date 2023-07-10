@@ -47,10 +47,10 @@ async function loginator(message, messageType) {
     message ??= " ";
     messageType ??= "info";
     const types = {
-        cmdr: ["CMDR", cci.fg.green, cci.bg.brightblack],
-        info: ["INFO", cci.fg.cyan, cci.bg.brightblack],
-        warn: ["WARN", cci.fg.yellow, cci.bg.brightblack],
-        oops: ["OOPS", cci.fg.red, cci.bg.brightblack]
+        cmdr: ["CMDR", cci.fg.black, cci.bg.white],
+        info: ["INFO", cci.fg.black, cci.bg.brightmagenta],
+        warn: ["WARN", cci.fg.black, cci.bg.yellow],
+        oops: ["OOPS", cci.fg.black, cci.bg.brightred]
     }
 
     const timestamp = new Date().toUTCString();

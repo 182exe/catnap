@@ -1,5 +1,6 @@
 const { SlashCommandBuilder , EmbedBuilder } = require('discord.js');
 const config = require('../config.json');
+const userData = require('../user_data.json')
 
 function jibber(length, punctuate, punctuationMarks, wordLengthLimit, mimicEnglishPractices) {
     length = typeof length !== `undefined` ? length : 1;

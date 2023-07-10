@@ -3,6 +3,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const guildData = require(`../guild_data.json`)
 const config = require('../config.json');
+const userData = require(`../user_data.json`)
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -15,7 +16,6 @@ module.exports = {
             .addChannelTypes(ChannelType.GuildText)
             .setRequired(true)),
 	async execute(interaction) {
-        const userData = require(`../user_data.json`)
 		const responseEmbed = new EmbedBuilder(config.embedFormat).setAuthor({name: `/${this.data.name}`}).addFields({
             name: `Server Configuration`,
             value: `You updated some server settings. Here's what your server looks like now:

@@ -3,6 +3,8 @@ const fs = require('node:fs');
 const path = require('node:path');
 const localCommands = require(`../commands_generated.json`)
 const config = require('../config.json');
+const userData = require(`../user_data.json`)
+
 //.setDefaultMemberPermissions(PermissionFlagsBits.Administrator);
 
 module.exports = {
@@ -14,7 +16,6 @@ module.exports = {
             .setDescription(`set or modify your TOS agreement`)
             .setRequired(true)),
 	async execute(interaction) {
-        const userData = require(`../user_data.json`)
         const responseMsg = interaction.options.getBoolean(`agreement`) ? 'accepted the terms of service! Coolio!' : 'disagreed!? Well, shame on you! (you can re-try at any time if you want, though :>)';
 		const responseEmbed = new EmbedBuilder(config.embedFormat).setAuthor({name: `/${this.data.name}`}).addFields({
             name: `TOS Agreement`,

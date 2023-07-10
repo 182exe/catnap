@@ -1,13 +1,13 @@
 const { SlashCommandBuilder , EmbedBuilder } = require('discord.js');
 const localCommands = require(`../commands_generated.json`)
 const config = require('../config.json');
+const userData = require(`../user_data.json`)
 
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('tos')
 		.setDescription('View the bot terms of service.'),
 	async execute(interaction) {
-		const userData = require(`../user_data.json`)
 		const responseEmbed = new EmbedBuilder(config.embedFormat).setTimestamp().setAuthor({name: `/${this.data.name}`}).addFields({
 			name: `Terms of Service / Privacy Statement`,
 			value: `If you have your direct messages open, then you should have recieved a DM from Catnap explaining the TOS. If not, please enable server members to DM you and re-run this command. Then, you can disable them if you wish.`

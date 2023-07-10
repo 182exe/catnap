@@ -1,13 +1,13 @@
 const { SlashCommandBuilder , EmbedBuilder } = require('discord.js');
 const localCommands = require(`../commands_generated.json`)
 const config = require('../config.json');
+const userData = require(`../user_data.json`)
 
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('timestamp')
 		.setDescription('Send the current time in the form of 7 different Discord timestamps.'),
 	async execute(interaction) {
-		const userData = require(`../user_data.json`)
         const t = Math.floor(Date.now() / 1000);
 		const responseEmbed = new EmbedBuilder(config.embedFormat).setTimestamp().setAuthor({name: `/${this.data.name}`}).addFields(
 			{

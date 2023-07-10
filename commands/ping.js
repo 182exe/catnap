@@ -1,5 +1,6 @@
 const { SlashCommandBuilder , EmbedBuilder } = require('discord.js');
 const config = require('../config.json');
+const userData = require(`../user_data.json`)
 
 const gifs = [
 	"https://thumbs.gfycat.com/EssentialHollowGalapagossealion-size_restricted.gif",
@@ -22,7 +23,6 @@ module.exports = {
 		.setName('ping')
 		.setDescription('Replies if the bot is online.'),
 	async execute(interaction) {
-		const userData = require(`../user_data.json`)
 		const responseEmbed = new EmbedBuilder(config.embedFormat).setAuthor({name: `/${this.data.name}`}).setImage(gif)
 		await interaction.reply({ embeds: [responseEmbed], ephemeral: userData[user]?.ephemeral ?? true });
 	},
