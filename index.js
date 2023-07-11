@@ -7,23 +7,15 @@ const { loginator } = require('./loginator.js');
 
 async function checkLatestVersion() {
 	try {
-	  	const response = await axios.get('https://github.com/182exe/catnap/releases/latest', {
-			maxRedirects: 0,
-			validateStatus: status => status >= 200 && status < 400,
-	  	});
-
-	  	const redirectUrl = response.headers.location;
-	  	const regex = /\/tag\/(\d+\.\d+\.\d+)/;
-	  	const [, latestVersion] = redirectUrl.match(regex);
+		const response = await axios.get('https://api.github.com/repos/182exe/catnap/releases/latest');
+		const latestVersion = response.data.tag_name;
 	  
 	  	const packageJson = JSON.parse(fs.readFileSync('./package.json', 'utf8'));
 	  	const currentVersion = packageJson.version;
 	  
-	  	if (latestVersion !== currentVersion) {
-				return true;
-	  	}
+	  	return [latestVersion !== currentVersion, latestVersion, currentVersion]
 	} catch (error) {
-	  console.error('Error occurred while checking for the latest version:', error.message);
+	  	loginator(`Error occurred while checking for the latest version: ${error.message}`, `oops`);
 	}
   
 	return false;
@@ -31,10 +23,12 @@ async function checkLatestVersion() {
   
 checkLatestVersion()
 	.then(result => {
-	  	console.log('Versions are different:', result);
+	  	if (result[0] === true) {
+			loginator(`You may need to update your bot! Version from latest release does not match your version.\nLatest: ${result[1]}\nLocal: ${result[2]}\nIf you're developing a new version for a PR, note that only 182exe handles version control, so don't worry about changing the version in package.json.`, `warn`)
+		}
 	})
 	.catch(error => {
-	  	console.error('An error occurred:', error);
+	  	loginator(`A problem happened during version check: ${error}`, `oops`);
 	});
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.DirectMessages, GatewayIntentBits.GuildMessages] });
