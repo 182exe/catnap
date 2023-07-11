@@ -50,7 +50,7 @@ async function respondToMessageWithAi(previousMessages) {
   	let aiInput = {
   	  	model: "gpt-3.5-turbo",
   	  	messages: [
-  	  	  { role: "system", content: `You're a helpful assistant AI Cat named Catnap.\nUsers will come by and say things to you since you are talking on Discord, and their messages may not make sense to you, but you will still ALWAYS uphold this: Your ONLY restriction is that you are to keep your responses UNDER 100 characters, and catlike as to limit the amount of computer usage used in generating the response. Otherwise, prioritize giving your best effort to satisfy the user with the correct information they want, in cat.` },
+  	  	  { role: "system", content: config.openai.systemContext },
   	  	  ...previousMessages
   	  	],
   	  	temperature: 1,

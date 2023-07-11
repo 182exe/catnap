@@ -1,10 +1,42 @@
 const fs = require('node:fs');
+const axios = require('axios');
 const path = require('node:path');
 const { Client, Events, GatewayIntentBits, Collection } = require('discord.js');
 const config = require('./config.json');
 const { loginator } = require('./loginator.js');
 
-// Create a new client instance
+async function checkLatestVersion() {
+	try {
+	  	const response = await axios.get('https://github.com/182exe/catnap/releases/latest', {
+			maxRedirects: 0,
+			validateStatus: status => status >= 200 && status < 400,
+	  	});
+
+	  	const redirectUrl = response.headers.location;
+	  	const regex = /\/tag\/(\d+\.\d+\.\d+)/;
+	  	const [, latestVersion] = redirectUrl.match(regex);
+	  
+	  	const packageJson = JSON.parse(fs.readFileSync('./package.json', 'utf8'));
+	  	const currentVersion = packageJson.version;
+	  
+	  	if (latestVersion !== currentVersion) {
+				return true;
+	  	}
+	} catch (error) {
+	  console.error('Error occurred while checking for the latest version:', error.message);
+	}
+  
+	return false;
+}
+  
+checkLatestVersion()
+	.then(result => {
+	  	console.log('Versions are different:', result);
+	})
+	.catch(error => {
+	  	console.error('An error occurred:', error);
+	});
+
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.DirectMessages, GatewayIntentBits.GuildMessages] });
 
 const eventsPath = path.join(__dirname, 'events');
