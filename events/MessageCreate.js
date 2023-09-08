@@ -48,7 +48,7 @@ async function getPreviousMessages(interaction, userId, botId, guildData) {
 
 async function respondToMessageWithAi(previousMessages) {
   	let aiInput = {
-  	  	model: "gpt-3.5-turbo",
+  	  	model: "gpt-4",
   	  	messages: [
   	  	  { role: "system", content: config.openai.systemContext },
   	  	  ...previousMessages
@@ -71,6 +71,14 @@ async function respondToMessageWithAi(previousMessages) {
   	}
 }
 
+function clearDiscordPings(inputString) {
+	const mentionRegex = /(@everyone|@here|<@&?\d+>)/g;
+	
+	const cleanString = inputString.replace(mentionRegex, '');
+  
+	return cleanString;
+}
+
 async function useAi(interaction) {
 	const guildData = require('../guild_data.json');
 	const userId = interaction.author.id;
@@ -85,7 +93,8 @@ async function useAi(interaction) {
 	if (!userData[userId] || !userData[userId].tos) { return };
 
 	const previousMessages = await getPreviousMessages(interaction, userId, botId, guildData)
-	const content = await respondToMessageWithAi(previousMessages);
+	let content = await respondToMessageWithAi(previousMessages);
+	content = clearDiscordPings(content);
 
 	interaction.reply(content)
 	loginator(`Using AI in a channel!\nMessage: "${content}"`)
