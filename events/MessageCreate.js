@@ -33,7 +33,7 @@ async function getPreviousMessages(interaction, userId, botId, guildData) {
 			try {
 				referencedMessage = await channel.messages.fetch(msg.reference.messageId);
 			} catch (error) {
-				logger.log(error, `oops`)
+				logger.log(error)
 			}
 			if (referencedMessage.author.id === userId) {
 				return {
