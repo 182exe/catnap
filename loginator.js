@@ -91,6 +91,9 @@ class Loginator {
 
     generateFunction(type) {
         return (message) => {
+            if (typeof message !== "string") {
+                message = JSON.stringify(message)
+            }
             const timestamp = this.disableTimestamps ? "" : new Date().toUTCString();
             const format = this.types[type];
             const formattedType = format[0];
