@@ -1,5 +1,12 @@
 const { Events, Client } = require('discord.js');
-const { loginator } = require('../loginator');
+const Loginator = require(`../loginator.js`)
+const logger = new Loginator(4, false, {
+    "info": {fg: "brightblack", bg: "white"},
+    "chat": {fg: "white", bg: "brightblack"},
+    "warn": {fg: "brightwhite", bg: "yellow"},
+    "uhoh": {fg: "yellow", bg: "red"},
+});
+logger.init();
 const fs = require('fs');
 const path = require('path');
 const config = require('../config.json');
@@ -26,16 +33,16 @@ module.exports = {
 			});
 		} else {
 			const command = interaction.client.commands.get(interaction.commandName);
-			loginator(`/${interaction.commandName} is running...\nfrom: ${interaction.user.tag} (${interaction.user.id})`, `cmdr`);
+			logger.info(`/${interaction.commandName} is running...\nfrom: ${interaction.user.tag} (${interaction.user.id})`);
 			
 			if (!command) {
-				loginator(`Someone ran a command that didn't exist! ${interaction.commandName} is not existing. Try redeploying commands.`, `oops`);
+				logger.oops(`Someone ran a command that didn't exist! ${interaction.commandName} is not existing. Try redeploying commands.`);
 				return;
 			}
 			try {
 				await command.execute(interaction);
 			} catch (error) {
-				loginator(`Something went wrong when trying to run a command! Error text: ${error}`, `oops`);
+				logger.oops(`Something went wrong when trying to run a command! Error text: ${error}`);
 			}
 		};
 		return;

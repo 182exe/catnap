@@ -1,5 +1,12 @@
 const { Events, ChannelManager, GuildChannelManager } = require('discord.js');
-const { loginator } = require('../loginator');
+const Loginator = require(`../loginator.js`)
+const logger = new Loginator(4, false, {
+    "info": {fg: "brightblack", bg: "white"},
+    "chat": {fg: "white", bg: "brightblack"},
+    "warn": {fg: "brightwhite", bg: "yellow"},
+    "uhoh": {fg: "yellow", bg: "red"},
+});
+logger.init();
 const fs = require('node:fs');
 const path = require('node:path');
 const config = require('../config.json');
@@ -97,7 +104,7 @@ async function useAi(interaction) {
 	content = clearDiscordPings(content);
 
 	interaction.reply(content)
-	loginator(`Using AI in a channel!\nMessage: "${content}"`)
+	logger.info(`Using AI in a channel!\nMessage: "${content}"`)
 }
 
 module.exports = {

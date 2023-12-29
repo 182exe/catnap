@@ -3,8 +3,15 @@ const axios = require('axios');
 const path = require('node:path');
 const { Client, Events, GatewayIntentBits, Collection } = require('discord.js');
 const config = require('./config.json');
-const { loginator } = require('./loginator.js');
-const semver = require('semver')
+const Loginator = require(`./loginator.js`)
+const logger = new Loginator(4, false, {
+    "info": {fg: "brightblack", bg: "white"},
+    "chat": {fg: "white", bg: "brightblack"},
+    "warn": {fg: "brightwhite", bg: "yellow"},
+    "uhoh": {fg: "yellow", bg: "red"},
+});
+logger.init();
+const semver = require('semver');
 
 async function checkVersion() {
 	try {
@@ -16,7 +23,7 @@ async function checkVersion() {
 		
 	  	return [releasedVersion, localVersion];
 	} catch (error) {
-	  	loginator(`Error occurred while checking for the latest version: ${error.message}`, `oops`);
+	  	logger.oops(`Error occurred while checking for the latest version: ${error.message}`);
 	}
   
 	return false;
@@ -27,15 +34,15 @@ checkVersion()
 	  	const localVersion = result[1];
 		
 	  	if (releasedVersion !== localVersion && semver.gt(releasedVersion, localVersion)) {
-			loginator(`You may need to update your bot! Version from latest release is newer than your version.\nLatest: ${releasedVersion}\nLocal: ${localVersion}\nIf you're PRing, just note that "management" handles version control, so don't worry about changing the version in package.json.`, `warn`);
+			logger.warn(`You may need to update your bot! Version from latest release is newer than your version.\nLatest: ${releasedVersion}\nLocal: ${localVersion}\nIf you're PRing, just note that "management" handles version control, so don't worry about changing the version in package.json.`);
 		} else if (releasedVersion !== localVersion && semver.lt(releasedVersion, localVersion)) {
-			loginator(`Happy Developing! (you have an unreleased and newer-than-newest version on your machine)`, `info`);
+			logger.info(`Happy Developing! (you have an unreleased and newer-than-newest version on your machine)`);
 		} else if (releasedVersion === localVersion) {
-			loginator(`You're on the newest version of Catnap! (${localVersion})`, `info`);
+			logger.info(`You're on the newest version of Catnap! (${localVersion})`);
 		}
 	})
 	.catch(error => {
-	  	loginator(`A problem happened during version check: ${error}`, `oops`);
+	  	logger.oops(`A problem happened during version check: ${error}`);
 	});
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.DirectMessages, GatewayIntentBits.GuildMessages] });
@@ -63,7 +70,7 @@ for (const file of commandFiles) {
 	if ('data' in command && 'execute' in command) {
 		client.commands.set(command.data.name, command);
 	} else {
-		loginator(`Problem while loading in command. The command at ${filePath} is missing a required data property or execute function.`)
+		logger.oops(`Problem while loading in command. The command at ${filePath} is missing a required data property or execute function.`)
 	}
 }
 
